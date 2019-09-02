@@ -8,8 +8,8 @@ plugins {
     kotlin("plugin.spring") version "1.2.71"
 }
 
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
+group = "com.busticket"
+version = "0.1"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 springBoot {
@@ -41,7 +41,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jinq:jinq-jpa:1.8.28")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
