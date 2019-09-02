@@ -20,6 +20,11 @@ class TestAuthController @Autowired constructor(
     @GetMapping("/test1")
     @Secured(ROLE_MANAGER_VOYAGE)
     fun test1(@ReqUser user: User): Any {
-        return restResponseService.restSuccess(mapOf("email" to user.email))
+        return restResponseService.restSuccess(
+                mapOf(
+                        "email" to user.email,
+                        "policy" to user.policy?.roles?.map { r -> r.id }
+                )
+        )
     }
 }

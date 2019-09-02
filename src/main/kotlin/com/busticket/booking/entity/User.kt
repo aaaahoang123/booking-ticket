@@ -4,8 +4,8 @@ import com.busticket.booking.enum.status.CommonStatus
 import javax.persistence.*
 
 @Entity
-@Table(name = "members", uniqueConstraints = [UniqueConstraint(name = "email_unique", columnNames = ["email"])])
-class User(
+@Table(name = "users", uniqueConstraints = [UniqueConstraint(name = "email_unique", columnNames = ["email"])])
+data class User(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,

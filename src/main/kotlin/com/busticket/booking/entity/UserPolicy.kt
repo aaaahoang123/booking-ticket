@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "user_policies")
-class UserPolicy(
+data class UserPolicy(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
@@ -19,7 +19,10 @@ class UserPolicy(
         var updatedAt: Long = System.currentTimeMillis(),
 
         @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @JoinTable(name = "policy_role_relations", joinColumns = [JoinColumn(name = "policy_id")], inverseJoinColumns = [JoinColumn(name = "role_id")])
+        @JoinTable(name = "policy_role_relations",
+                joinColumns = [JoinColumn(name = "policy_id")],
+                inverseJoinColumns = [JoinColumn(name = "role_id")],
+                indexes = [Index(name = "policy_id_index", columnList = "policy_id", unique = false)])
         var roles: Set<UserRole> = emptySet(),
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "policy")
