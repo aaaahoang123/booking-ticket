@@ -10,6 +10,4 @@ interface AuthService {
     fun attemptMember(email: String, password: String): Member
     fun generateToken(member: Member): String
     fun decodeToken(token: String): Optional<Member>
-    fun getUserDetailByEmail(email: String): UserDetails
-    fun buildUserDetailFromMember(member: Member): UserDetails
 }
