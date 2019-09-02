@@ -1,4 +1,4 @@
-package com.busticket.booking.lib.requestuser
+package com.busticket.booking.lib.auth
 
 import javax.servlet.http.HttpServletRequest
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -22,6 +22,6 @@ class ReqUserResolver : HandlerMethodArgumentResolver {
             webDataBinderFactory: WebDataBinderFactory?): Any? {
 
         val request = nativeWebRequest.nativeRequest as HttpServletRequest
-        return request.getAttribute("user")
+        return request.getAttribute(USER_ATTR_NAME)
     }
 }

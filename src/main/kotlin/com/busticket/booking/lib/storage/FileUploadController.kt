@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.*
 
 
 @Controller
+@RequestMapping(value = ["/upload"])
 class FileUploadController @Autowired constructor(
         private val storageService: StorageService,
         private val restResponseService: RestResponseService
 ) {
 
-    @GetMapping("/upload/{filename:.+}")
+    @GetMapping("/{filename:.+}")
     @ResponseBody
     fun serveFile(@PathVariable filename: String): ResponseEntity<Resource> {
         val file = storageService.loadAsResource(filename)
@@ -32,7 +33,7 @@ class FileUploadController @Autowired constructor(
                 .body<Resource>(file)
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/")
     fun handleFileUpload(@RequestParam("file") file: MultipartFile): ResponseEntity<Any> {
         val fileName = storageService.store(file)
 

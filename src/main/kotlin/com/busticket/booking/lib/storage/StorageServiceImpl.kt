@@ -30,7 +30,7 @@ class StorageServiceImpl @Autowired constructor(private val properties: StorageP
             }
 
             val extension = filename.substring(filename.lastIndexOf(".") + 1)
-            if (!properties.exceptExtension.contains(extension)) {
+            if (!properties.acceptExtensions.contains(extension)) {
                 throw StorageException("forbidden_extension")
             }
             val randomName = randomString()

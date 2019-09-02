@@ -24,7 +24,7 @@ class AuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthenticati
         // So we should check the request attribute first, if it is exists, we can make it pass immediately
         val user =
             when {
-                request.getAttribute("user") != null -> request.getAttribute("user")
+                request.getAttribute(USER_ATTR_NAME) != null -> request.getAttribute("user")
                 token != null -> try {
                     authService.decodeToken(token).get()
                 } catch (e: Exception) {
@@ -33,7 +33,7 @@ class AuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthenticati
                 else -> null
             }
         val requestAuthentication = UsernamePasswordAuthenticationToken(user, user)
-        request.setAttribute("user", user)
+        request.setAttribute(USER_ATTR_NAME, user)
         return authenticationManager.authenticate(requestAuthentication)
     }
 

@@ -3,7 +3,7 @@ package com.busticket.booking.controller
 import com.busticket.booking.entity.Member
 import com.busticket.booking.enum.role.ROLE_MANAGER_VOYAGE
 import com.busticket.booking.service.interfaces.AuthService
-import com.busticket.booking.lib.requestuser.ReqUser
+import com.busticket.booking.lib.auth.ReqUser
 import com.busticket.booking.lib.rest.RestResponseService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping

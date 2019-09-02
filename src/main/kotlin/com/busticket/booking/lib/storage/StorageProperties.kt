@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties("storage")
 class StorageProperties {
     var location = "upload"
-    val exceptExtension = listOf("jpg", "jpeg", "png", "gif")
+    val acceptExtensions = listOf("jpg", "jpeg", "png", "gif")
 }
