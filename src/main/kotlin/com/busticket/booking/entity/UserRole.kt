@@ -4,8 +4,8 @@ import com.busticket.booking.enum.status.CommonStatus
 import javax.persistence.*
 
 @Entity
-@Table(name = "policy_roles")
-class MemberPolicyRole(
+@Table(name = "user_roles")
+class UserRole(
         @Id
         @Column(columnDefinition = "varchar(191)")
         var id: String = "",
@@ -17,5 +17,5 @@ class MemberPolicyRole(
         var updatedAt: Long = System.currentTimeMillis(),
 
         @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "roles")
-        var policies: Set<MemberPolicy> = emptySet()
+        var policies: Set<UserPolicy> = emptySet()
 )

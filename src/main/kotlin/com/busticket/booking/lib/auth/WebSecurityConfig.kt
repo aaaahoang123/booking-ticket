@@ -14,15 +14,17 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.AuthenticationEntryPoint
+import javax.servlet.Filter
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 class WebSecurityConfig: WebSecurityConfigurerAdapter() {
-    @Autowired
-    private lateinit var authenticationProvider: AuthenticationProvider
+//    @Autowired
+//    private lateinit var authenticationProvider: JwtAuthenticationProvider
 
     private val _protectedUrls = AntPathRequestMatcher("/api")
 
@@ -31,13 +33,19 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
         return BCryptPasswordEncoder()
     }
 
-    @Bean
+    @Bean(name = ["jwtAuthenticationFilter"])
     @Throws(Exception::class)
-    fun authenticationFilter(): AuthenticationFilter {
-        val filter = AuthenticationFilter(AntPathRequestMatcher("/api/**"))
+    fun authenticationFilter(): Filter {
+        val filter = JwtAuthenticationFilter(AntPathRequestMatcher("/api/**"))
         filter.setAuthenticationManager(authenticationManager())
         return filter
     }
+
+    @Bean
+    fun authenticationProvider(): AuthenticationProvider {
+        return JwtAuthenticationProvider()
+    }
+
     @Bean
     fun forbiddenEntryPoint(): AuthenticationEntryPoint {
         return HttpStatusEntryPoint(HttpStatus.FORBIDDEN)
@@ -49,7 +57,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .and()
                 .exceptionHandling()
                 .and()
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter::class.java)
                 .authorizeRequests()
                 .requestMatchers(_protectedUrls)
@@ -65,6 +73,4 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
         web.ignoring()
                 .antMatchers("/api/auth/**", "/upload/**", "/upload")
     }
-
-
 }

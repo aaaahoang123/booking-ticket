@@ -1,29 +1,27 @@
 package com.busticket.booking.lib.auth
 
-import com.busticket.booking.entity.Member
+import com.busticket.booking.entity.User
 import com.busticket.booking.enum.role.ADMIN_SPECIAL_ROLE
 import com.busticket.booking.repository.isActive
-import com.busticket.booking.repository.role.PolicyRoleRepository
+import com.busticket.booking.repository.role.UserRoleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.stereotype.Component
 
-@Component
-class AuthenticationProvider @Autowired constructor(
-        private val policyRoleRepository: PolicyRoleRepository
-) : AbstractUserDetailsAuthenticationProvider() {
+class JwtAuthenticationProvider : AbstractUserDetailsAuthenticationProvider() {
+    @Autowired
+    private lateinit var userRoleRepository: UserRoleRepository
+
     @Throws(AuthenticationException::class)
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val member = authentication?.credentials
-        if (member != null) {
-            return buildUserDetailFromMember(member as Member)
+        val user = authentication?.credentials
+        if (user != null) {
+            return buildUserDetailFromMember(user as User)
         }
         throw UsernameNotFoundException("wrong_authentication_info")
     }
@@ -32,18 +30,19 @@ class AuthenticationProvider @Autowired constructor(
         //
     }
 
-    fun buildUserDetailFromMember(member: Member): UserDetails {
-        val policy = member.policy
+    fun buildUserDetailFromMember(user: User): UserDetails {
+        val policy = user.policy
         val roles =
                 if (policy?.specialRole == ADMIN_SPECIAL_ROLE) {
-                    policyRoleRepository.findAll(Specification.where(isActive())).map { role -> SimpleGrantedAuthority(role.id) }
+                    userRoleRepository.findAll(Specification.where(isActive())).map { role -> SimpleGrantedAuthority(role.id) }
                 } else {
                     policy?.roles?.map { role -> SimpleGrantedAuthority(role.id) } ?: listOf()
                 }
 
-        return User.builder()
-                .username(member.email)
-                .password(member.password)
+        return org.springframework.security.core.userdetails.User
+                .builder()
+                .username(user.email)
+                .password(user.password)
                 .authorities(roles)
                 .build()
     }

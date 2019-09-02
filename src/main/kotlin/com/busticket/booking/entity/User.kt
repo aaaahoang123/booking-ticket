@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "members", uniqueConstraints = [UniqueConstraint(name = "email_unique", columnNames = ["email"])])
-class Member(
+class User(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
@@ -24,5 +24,5 @@ class Member(
 
         @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinColumn(name = "policyId", columnDefinition = "int default 0")
-        var policy: MemberPolicy? = null
+        var policy: UserPolicy? = null
 )

@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.lang.Exception
 import javax.servlet.FilterChain
 
-class AuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthenticationProcessingFilter(requestMatcher) {
+
+class JwtAuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthenticationProcessingFilter(requestMatcher) {
     @Autowired
     private lateinit var authService: AuthService
 
@@ -28,7 +30,7 @@ class AuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthenticati
                 token != null -> try {
                     authService.decodeToken(token).get()
                 } catch (e: Exception) {
-                    throw ExecuteException("wrong_authentication_info")
+                    throw UsernameNotFoundException("wrong_authentication_info")
                 }
                 else -> null
             }

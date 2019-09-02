@@ -1,8 +1,8 @@
 package com.busticket.booking.repository.role
 
-import com.busticket.booking.entity.MemberPolicyRole
+import com.busticket.booking.entity.UserRole
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 
-interface PolicyRoleRepository: JpaRepository<MemberPolicyRole, String>, JpaSpecificationExecutor<MemberPolicyRole> {
+interface UserRoleRepository: JpaRepository<UserRole, String>, JpaSpecificationExecutor<UserRole> {
 }

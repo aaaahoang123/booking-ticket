@@ -1,6 +1,6 @@
 package com.busticket.booking.controller
 
-import com.busticket.booking.entity.Member
+import com.busticket.booking.entity.User
 import com.busticket.booking.enum.role.ROLE_MANAGER_VOYAGE
 import com.busticket.booking.service.interfaces.AuthService
 import com.busticket.booking.lib.auth.ReqUser
@@ -19,7 +19,7 @@ class TestAuthController @Autowired constructor(
 ) {
     @GetMapping("/test1")
     @Secured(ROLE_MANAGER_VOYAGE)
-    fun test1(@ReqUser member: Member): Any {
-        return restResponseService.restSuccess(mapOf("email" to member.email))
+    fun test1(@ReqUser user: User): Any {
+        return restResponseService.restSuccess(mapOf("email" to user.email))
     }
 }

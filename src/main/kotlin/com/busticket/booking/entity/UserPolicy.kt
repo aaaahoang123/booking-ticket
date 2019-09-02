@@ -4,8 +4,8 @@ import com.busticket.booking.enum.status.CommonStatus
 import javax.persistence.*
 
 @Entity
-@Table(name = "member_policies")
-class MemberPolicy(
+@Table(name = "user_policies")
+class UserPolicy(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
@@ -18,10 +18,10 @@ class MemberPolicy(
         var createdAt: Long = System.currentTimeMillis(),
         var updatedAt: Long = System.currentTimeMillis(),
 
-        @ManyToMany(cascade = [CascadeType.DETACH], fetch = FetchType.LAZY)
+        @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinTable(name = "policy_role_relations", joinColumns = [JoinColumn(name = "policy_id")], inverseJoinColumns = [JoinColumn(name = "role_id")])
-        var roles: Set<MemberPolicyRole> = emptySet(),
+        var roles: Set<UserRole> = emptySet(),
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "policy")
-        var members: Set<Member> = emptySet()
+        var users: Set<User> = emptySet()
 )
