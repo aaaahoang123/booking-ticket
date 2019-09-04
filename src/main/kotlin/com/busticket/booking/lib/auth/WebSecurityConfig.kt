@@ -1,5 +1,6 @@
 package com.busticket.booking.lib.auth
 
+import com.busticket.booking.API_PREFIX
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,7 +27,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 //    @Autowired
 //    private lateinit var authenticationProvider: JwtAuthenticationProvider
 
-    private val _protectedUrls = AntPathRequestMatcher("/api")
+    private val _protectedUrls = AntPathRequestMatcher(API_PREFIX)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -36,7 +37,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     @Bean(name = ["jwtAuthenticationFilter"])
     @Throws(Exception::class)
     fun authenticationFilter(): Filter {
-        val filter = JwtAuthenticationFilter(AntPathRequestMatcher("/api/**"))
+        val filter = JwtAuthenticationFilter(AntPathRequestMatcher("$API_PREFIX/**"))
         filter.setAuthenticationManager(authenticationManager())
         return filter
     }
@@ -71,6 +72,6 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(web: WebSecurity) {
         web.ignoring()
-                .antMatchers("/api/auth/**", "/upload/**", "/upload")
+                .antMatchers("$API_PREFIX/auth/**", "/upload/**", "/upload")
     }
 }

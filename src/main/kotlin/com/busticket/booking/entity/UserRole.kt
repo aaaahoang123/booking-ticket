@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "user_roles")
-data class UserRole(
+class UserRole(
         @Id
         @Column(columnDefinition = "varchar(191)")
         var id: String = "",

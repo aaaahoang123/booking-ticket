@@ -5,8 +5,7 @@ import javax.validation.constraints.NotNull
 
 class AuthRequest(
         @field:NotEmpty(message = "can_not_be_empty")
-        @field:NotNull(message = "can_not_be_empty")
         var email: String,
-        @field:NotEmpty
+        @field:NotEmpty(message = "can_not_be_empty")
         var password: String
 )

@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "user_policies")
-data class UserPolicy(
+class UserPolicy(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
