@@ -6,7 +6,7 @@ import com.busticket.booking.request.AuthRequest
 import com.busticket.booking.service.interfaces.AuthService
 import com.busticket.booking.lib.assignObject
 import com.busticket.booking.lib.exception.ExecuteException
-import com.busticket.booking.repository.user.memberEmailEqual
+import com.busticket.booking.repository.user.userEmailEqual
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -25,7 +25,7 @@ class AuthServiceImpl @Autowired constructor(
     private val _jwtExpiration = 604800000L
 
     override fun register(dto: AuthRequest): com.busticket.booking.entity.User {
-        if (userRepo.count(memberEmailEqual(dto.email)) > 0) {
+        if (userRepo.count(userEmailEqual(dto.email)) > 0) {
             throw ExecuteException("duplicate_email")
         }
         dto.password = passwordEncoder.encode(dto.password)

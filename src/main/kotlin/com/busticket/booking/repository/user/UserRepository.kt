@@ -1,15 +1,14 @@
 package com.busticket.booking.repository.user
 
 import com.busticket.booking.entity.User
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor
+import com.busticket.booking.repository.BaseRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface UserRepository: JpaRepository<User, Int>, JpaSpecificationExecutor<User> {
+interface UserRepository: BaseRepository<User, Int> {
     fun findMemberByEmail(email: String): Optional<User>
 
     @Query("select m from User m LEFT JOIN FETCH m.policy p LEFT JOIN FETCH p.roles where m.email = :email")

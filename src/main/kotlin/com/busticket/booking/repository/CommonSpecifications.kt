@@ -9,7 +9,7 @@ fun <T> initSpec(): Specification<T> {
     return Specification { _, _, _ -> null }
 }
 
-fun <T> isActive(activeStatus: Int = ACTIVE_STATUS): Specification<T> {
+fun <T> hasStatus(activeStatus: Int = ACTIVE_STATUS): Specification<T> {
     return Specification { root, _, criteriaBuilder ->
         criteriaBuilder.equal(root.get<Any>("status"), activeStatus)
     }

@@ -9,8 +9,9 @@ fun <T: Any> assignObject(output: T, source: Any): T {
     output.javaClass.kotlin.memberProperties
             .filterIsInstance<KMutableProperty<*>>()
             .forEach { prop ->
-                if (mapValue[prop.name] != null)
+                if (mapValue[prop.name] != null) {
                     prop.setter.call(output, mapValue[prop.name])
+                }
             }
     return output
 }

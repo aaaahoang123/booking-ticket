@@ -3,8 +3,7 @@ package com.busticket.booking.lib.auth
 import com.busticket.booking.entity.User
 import com.busticket.booking.enum.role.ADMIN_SPECIAL_ROLE
 import com.busticket.booking.service.interfaces.AuthService
-import com.busticket.booking.lib.exception.ExecuteException
-import com.busticket.booking.repository.isActive
+import com.busticket.booking.repository.hasStatus
 import com.busticket.booking.repository.role.UserRoleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.domain.Specification
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.http.HttpHeaders.AUTHORIZATION
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.lang.Exception
@@ -59,7 +57,7 @@ class JwtAuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthentic
     private fun fetchRolesForUser(user: User): User {
         val policy = user.policy
         if (policy?.specialRole == ADMIN_SPECIAL_ROLE) {
-            policy.roles = userRoleRepository.findAll(Specification.where(isActive())).toSet()
+            policy.roles = userRoleRepository.findAll(Specification.where(hasStatus())).toSet()
         }
         user.policy = policy
         return user

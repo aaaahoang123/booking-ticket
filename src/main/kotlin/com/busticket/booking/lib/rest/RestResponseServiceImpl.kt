@@ -21,7 +21,7 @@ class RestResponseServiceImpl @Autowired constructor(
                 "status" to 1,
                 "message" to localeService.getMessage(message, request)
         )
-        if (data?.javaClass?.isArray == true) {
+        if (data?.javaClass?.isArray == true || data?.javaClass?.let { it -> List::class.java.isAssignableFrom(it)} == true) {
             res["datas"] = data
         } else {
             res["data"] = data
