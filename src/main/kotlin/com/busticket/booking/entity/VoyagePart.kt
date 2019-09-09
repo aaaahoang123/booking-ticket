@@ -9,10 +9,10 @@ class VoyagePart(
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
         @ManyToOne
-        @JoinColumn(name = "fromId")
+        @JoinColumn(name = "fromId", columnDefinition = "int default 0 not null")
         var from: Street? = null,
         @ManyToOne
-        @JoinColumn(name = "toId")
+        @JoinColumn(name = "toId", columnDefinition = "int default 0 not null")
         var to: Street? = null,
         var distance: Int = 0,
         @ManyToOne(cascade = [CascadeType.ALL])
