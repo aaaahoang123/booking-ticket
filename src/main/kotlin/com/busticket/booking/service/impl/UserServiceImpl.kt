@@ -27,7 +27,9 @@ class UserServiceImpl @Autowired constructor(
 
     override fun create(dto: Any): User {
         dto as UserRequest
-        val existed = primaryRepo.count(Specification.where(userEmailEqual(dto.email))) != 0L
+        val existed = primaryRepo.count(
+                Specification.where(userEmailEqual(dto.email))
+        ) != 0L
         if (existed) {
             throw ExecuteException("duplicate_email")
         }

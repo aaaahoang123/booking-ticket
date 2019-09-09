@@ -72,6 +72,6 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(web: WebSecurity) {
         web.ignoring()
-                .antMatchers("$API_PREFIX/auth/**", "/upload/**", "/upload")
+                .antMatchers("/auth/**", "/upload/**", "/upload")
     }
 }

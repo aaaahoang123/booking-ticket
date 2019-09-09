@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping(value = ["$API_PREFIX/auth"])
+@RequestMapping(value = ["/auth"])
 class AuthController @Autowired constructor(
         private val authService: AuthService,
         private val restResponseService: RestResponseService,
