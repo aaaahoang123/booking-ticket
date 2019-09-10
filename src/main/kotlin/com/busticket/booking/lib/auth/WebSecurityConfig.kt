@@ -66,6 +66,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .requestMatchers(_protectedUrls)
                 .authenticated()
                 .and()
+                .cors().disable()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()

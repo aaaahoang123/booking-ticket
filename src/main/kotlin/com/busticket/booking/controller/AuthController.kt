@@ -12,6 +12,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/auth"])
+@CrossOrigin
 class AuthController @Autowired constructor(
         private val authService: AuthService,
         private val restResponseService: RestResponseService,
