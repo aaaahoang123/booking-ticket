@@ -20,7 +20,7 @@ class VoyageController @Autowired constructor(
         private val dtoBuilder: DtoBuilderService,
         private val restResponse: RestResponseService
 ) {
-    @PostMapping("/create")
+    @PostMapping
     fun createVoyage(@RequestBody @Valid dto: VoyageRequest): ResponseEntity<Any> {
         val voyage = voyageService.create(dto)
         val result = dtoBuilder.buildVoyageDto(voyage)
