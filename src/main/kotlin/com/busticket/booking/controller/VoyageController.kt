@@ -7,14 +7,12 @@ import com.busticket.booking.service.interfaces.DtoBuilderService
 import com.busticket.booking.service.interfaces.VoyageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("$API_PREFIX/voyages")
+@CrossOrigin
 class VoyageController @Autowired constructor(
         private val voyageService: VoyageService,
         private val dtoBuilder: DtoBuilderService,

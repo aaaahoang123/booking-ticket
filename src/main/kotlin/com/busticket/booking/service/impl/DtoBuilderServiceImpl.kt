@@ -1,12 +1,8 @@
 package com.busticket.booking.service.impl
 
 import com.busticket.booking.CLIENT_DATE_FORMAT
-import com.busticket.booking.dto.UserDto
-import com.busticket.booking.dto.VoyageDto
-import com.busticket.booking.dto.VoyagePartDto
-import com.busticket.booking.entity.User
-import com.busticket.booking.entity.Voyage
-import com.busticket.booking.entity.VoyagePart
+import com.busticket.booking.dto.*
+import com.busticket.booking.entity.*
 import com.busticket.booking.enum.status.commonStatusTitle
 import com.busticket.booking.lib.datetime.format
 import com.busticket.booking.lib.locale.LocaleService
@@ -73,6 +69,38 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 updatedAtStr = format(voyagePart.updatedAt, CLIENT_DATE_FORMAT),
                 status = voyagePart.status
 
+        )
+    }
+
+    override fun buildVehicleCategoryDto(vehicleCategory: VehicleCategory): VehicleCategoryDto {
+        val result = VehicleCategoryDto(
+                id = vehicleCategory.id!!,
+                name = vehicleCategory.name,
+                seatQuantity = vehicleCategory.seatQuantity,
+                price = vehicleCategory.price,
+                createdAt = vehicleCategory.createdAt,
+                updatedAt = vehicleCategory.updatedAt,
+                createdAtStr = format(vehicleCategory.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(vehicleCategory.updatedAt, CLIENT_DATE_FORMAT),
+                status = vehicleCategory.status
+        )
+        if (Hibernate.isInitialized(vehicleCategory.vehicles))
+            result.vehicles = vehicleCategory.vehicles.map { buildVehicleDto(it) }
+
+        return result
+    }
+
+    override fun buildVehicleDto(vehicle: Vehicle): VehicleDto {
+        return VehicleDto(
+                id = vehicle.id!!,
+                name = vehicle.name,
+                plate = vehicle.plate,
+                color = vehicle.color,
+                createdAt = vehicle.createdAt,
+                updatedAt = vehicle.updatedAt,
+                createdAtStr = format(vehicle.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(vehicle.updatedAt, CLIENT_DATE_FORMAT),
+                status = vehicle.status
         )
     }
 }
