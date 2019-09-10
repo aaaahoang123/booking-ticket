@@ -18,10 +18,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.servlet.Filter
 
 @Configuration
 @EnableWebSecurity
+@EnableTransactionManagement(proxyTargetClass=true)
 @EnableGlobalMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 //    @Autowired
