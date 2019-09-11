@@ -9,4 +9,7 @@ interface DtoBuilderService {
     fun buildVoyagePartDto(voyagePart: VoyagePart): VoyagePartDto
     fun buildVehicleCategoryDto(vehicleCategory: VehicleCategory): VehicleCategoryDto
     fun buildVehicleDto(vehicle: Vehicle): VehicleDto
+    fun buildProvinceDto(province: Province): ProvinceDto
+    fun buildDistrictDto(district: District): DistrictDto
+    fun buildStreetDto(street: Street): StreetDto
 }

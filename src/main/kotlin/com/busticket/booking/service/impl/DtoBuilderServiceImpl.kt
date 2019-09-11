@@ -103,4 +103,29 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 status = vehicle.status
         )
     }
+
+    override fun buildProvinceDto(province: Province): ProvinceDto {
+        return ProvinceDto(
+                id = province.id!!,
+                name = province.name,
+                code = province.code
+        )
+    }
+
+    override fun buildDistrictDto(district: District): DistrictDto {
+        return DistrictDto(
+                id = district.id!!,
+                name = district.name,
+                prefix = district.prefix
+        )
+    }
+
+    override fun buildStreetDto(street: Street): StreetDto {
+        return StreetDto(
+                id = street.id!!,
+                name = street.name,
+                prefix = street.prefix,
+                tag = street.tag
+        )
+    }
 }
