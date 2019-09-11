@@ -6,8 +6,8 @@ import javax.validation.constraints.NotEmpty
 
 class UserRequest(
         var id: Int? = null,
-        @NotEmpty
-        @Email
+        @field:NotEmpty
+        @field:Email
         var email: String = "",
         var password: String? = null,
         var name: String? = null,

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     kotlin("plugin.jpa") version "1.2.71"
@@ -15,7 +16,7 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 springBoot {
     buildInfo {
         properties {
-            artifact = "$group-$version.jar"
+            artifact = "$group.jar"
             version = version
             name = group
         }
@@ -53,4 +54,7 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
     }
+}
+tasks.getByName<BootJar>("bootJar") {
+    launchScript()
 }
