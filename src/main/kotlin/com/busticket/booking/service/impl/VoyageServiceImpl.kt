@@ -4,7 +4,7 @@ import com.busticket.booking.entity.Street
 import com.busticket.booking.entity.Voyage
 import com.busticket.booking.entity.VoyagePart
 import com.busticket.booking.lib.assignObject
-import com.busticket.booking.repository.street.StreetRepository
+import com.busticket.booking.repository.region.StreetRepository
 import com.busticket.booking.repository.voyage.VoyagePartRepository
 import com.busticket.booking.repository.voyage.VoyageRepository
 import com.busticket.booking.request.VoyageRequest

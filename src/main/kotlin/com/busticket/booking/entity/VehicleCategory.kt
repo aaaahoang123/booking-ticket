@@ -17,7 +17,7 @@ class VehicleCategory(
         var updatedAt: Long = System.currentTimeMillis(),
         @Column(columnDefinition = "tinyint default 1")
         var status: Int = CommonStatus.ACTIVE.value,
-        @OneToMany(mappedBy = "vehicleCategory", cascade = [CascadeType.ALL])
+        @OneToMany(mappedBy = "vehicleCategory", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         var vehicles: Set<Vehicle> = setOf()
 ) {
 }

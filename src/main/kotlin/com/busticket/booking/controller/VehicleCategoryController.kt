@@ -7,14 +7,12 @@ import com.busticket.booking.service.interfaces.DtoBuilderService
 import com.busticket.booking.service.interfaces.VehicleCategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("$API_PREFIX/vehicle-categories")
+@CrossOrigin
 class VehicleCategoryController @Autowired constructor(
         private val vehicleCategoryService: VehicleCategoryService,
         private val dtoBuilder: DtoBuilderService,
@@ -27,4 +25,33 @@ class VehicleCategoryController @Autowired constructor(
         val result = dtoBuilder.buildVehicleCategoryDto(vehicle)
         return restResponse.restSuccess(result)
     }
+
+    @GetMapping
+    fun getAllVehicleCategory(): ResponseEntity<Any> {
+        val listVehicleCategory = vehicleCategoryService.findAllActiveItems()
+        val result = listVehicleCategory.map { dtoBuilder.buildVehicleCategoryDto(it) }
+        return restResponse.restSuccess(result)
+    }
+
+    @GetMapping(value = ["/{id}"])
+    fun getVehicleCategoryById(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val vehicleCategory = vehicleCategoryService.singleById(id)
+        val result = dtoBuilder.buildVehicleCategoryDto(vehicleCategory)
+        return restResponse.restSuccess(result)
+    }
+
+    @DeleteMapping(value = ["/{id}"])
+    fun deleteVehicleCategory(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val vehicleCategory = vehicleCategoryService.delete(id)
+        val result = dtoBuilder.buildVehicleCategoryDto(vehicleCategory)
+        return restResponse.restSuccess(result)
+    }
+
+    @PutMapping(value = ["/{id}"])
+    fun editVehicleCategory(@PathVariable("id") id: Int, @RequestBody @Valid dto: VehicleCategoryRequest): ResponseEntity<Any> {
+        val vehicleCategory = vehicleCategoryService.edit(id, dto)
+        val result = dtoBuilder.buildVehicleCategoryDto(vehicleCategory)
+        return restResponse.restSuccess(result)
+    }
+
 }
