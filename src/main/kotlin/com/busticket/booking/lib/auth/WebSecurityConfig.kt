@@ -29,7 +29,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 //    @Autowired
 //    private lateinit var authenticationProvider: JwtAuthenticationProvider
 
-    private val _protectedUrls = AntPathRequestMatcher(API_PREFIX)
+    private val _protectedUrls = AntPathRequestMatcher("$API_PREFIX/**")
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -66,7 +66,8 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .requestMatchers(_protectedUrls)
                 .authenticated()
                 .and()
-                .cors().disable()
+                .cors()
+                .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()

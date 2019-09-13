@@ -19,6 +19,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(value = ["$API_PREFIX/users"])
 @Secured
+@CrossOrigin
 class UserController @Autowired constructor(
         private val dtoBuilder: DtoBuilderService,
         private val responseService: RestResponseService,
