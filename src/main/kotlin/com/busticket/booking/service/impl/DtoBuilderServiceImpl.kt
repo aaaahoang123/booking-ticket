@@ -50,7 +50,10 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 status = voyage.status
         )
         if (Hibernate.isInitialized(voyage.voyageParts))
-            result.voyageParts = voyage.voyageParts.map { buildVoyagePartDto(it) }
+            result.voyageParts = voyage.voyageParts!!.map { buildVoyagePartDto(it) }
+        if (Hibernate.isInitialized(voyage.scheduleTemplates)) {
+            result.scheduleTemplates = voyage.scheduleTemplates.map { buildScheduleTemplateDto(it) }
+        }
         return result
     }
 
@@ -96,6 +99,7 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 name = vehicle.name,
                 plate = vehicle.plate,
                 color = vehicle.color,
+                category_id = vehicle.vehicleCategoryId!!,
                 createdAt = vehicle.createdAt,
                 updatedAt = vehicle.updatedAt,
                 createdAtStr = format(vehicle.createdAt, CLIENT_DATE_FORMAT),
@@ -126,6 +130,21 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 name = street.name,
                 prefix = street.prefix,
                 tag = street.tag
+        )
+    }
+
+    override fun buildScheduleTemplateDto(scheduleTemplate: ScheduleTemplate): ScheduleTemplateDto {
+        return ScheduleTemplateDto(
+                id = scheduleTemplate.id!!,
+                timeStart = scheduleTemplate.timeStart!!,
+                timeEnd = scheduleTemplate.timeEnd!!,
+                createdAt = scheduleTemplate.createdAt,
+                updatedAt = scheduleTemplate.updatedAt,
+                createdAtStr = format(scheduleTemplate.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(scheduleTemplate.updatedAt, CLIENT_DATE_FORMAT),
+                status = scheduleTemplate.status
+
+
         )
     }
 }

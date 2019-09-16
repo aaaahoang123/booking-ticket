@@ -15,9 +15,11 @@ class Vehicle(
         @ManyToOne
         @JoinColumn(name = "category_id")
         var vehicleCategory: VehicleCategory? = null,
+        @Column(name = "category_id", insertable = false, updatable = false)
+        var vehicleCategoryId: Int? = null,
         var createdAt: Long = System.currentTimeMillis(),
         var updatedAt: Long = System.currentTimeMillis(),
         @Column(columnDefinition = "tinyint default 1")
         var status: Int = CommonStatus.ACTIVE.value
-        ) {
+) {
 }

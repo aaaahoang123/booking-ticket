@@ -1,15 +1,13 @@
 package com.busticket.booking.dto
 
-import com.busticket.booking.entity.VehicleCategory
+import javax.persistence.Id
 
-class VehicleDto(
+class ScheduleTemplateDto(
         val id: Int,
-        val name: String,
-        val plate: String,
-        val color: String,
+        val timeStart: Long,
+        val timeEnd: Long,
         val createdAt: Long,
         val updatedAt: Long,
-        val category_id: Int,
         val createdAtStr: String,
         val updatedAtStr: String,
         val status: Int

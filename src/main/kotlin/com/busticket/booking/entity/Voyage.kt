@@ -15,6 +15,8 @@ class Voyage(
         @Column(columnDefinition = "tinyint default 1")
         var status: Int = CommonStatus.ACTIVE.value,
         @OneToMany(mappedBy = "voyage", cascade = [CascadeType.ALL])
-        var voyageParts: Set<VoyagePart> = setOf()
+        var voyageParts: Set<VoyagePart>? = mutableSetOf(),
+        @ManyToMany(mappedBy = "voyages")
+        var scheduleTemplates: Set<ScheduleTemplate> = setOf()
 ) {
 }

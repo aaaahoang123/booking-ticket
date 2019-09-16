@@ -16,17 +16,26 @@ fun <T> hasStatus(activeStatus: Int = ACTIVE_STATUS): Specification<T> {
 }
 
 fun <Root, Relation> fetchRelation(relationName: String): Specification<Root> {
-    return Specification { root, _, criteriaBuilder ->
+    return Specification { root, query, criteriaBuilder ->
+        query.distinct(true)
         root.fetch<Root, Relation>(relationName)
         criteriaBuilder.conjunction()
     }
 }
 
 fun <Root> fetchRelations(relationNames: List<String>): Specification<Root> {
-    return Specification { root, _, criteriaBuilder ->
+    return Specification { root, query, criteriaBuilder ->
+        query.distinct(true)
         for (relation in relationNames) {
             root.fetch<Root, Any>(relation)
         }
         criteriaBuilder.conjunction()
+    }
+}
+
+fun <Root> distinctRootEntity(): Specification<Root> {
+    return Specification { _, query, _ ->
+        query.distinct(true)
+        null
     }
 }

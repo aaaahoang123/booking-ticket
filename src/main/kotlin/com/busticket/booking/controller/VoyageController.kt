@@ -24,4 +24,12 @@ class VoyageController @Autowired constructor(
         val result = dtoBuilder.buildVoyageDto(voyage)
         return restResponse.restSuccess(result)
     }
+
+    @GetMapping
+    fun listVoyage(): ResponseEntity<Any> {
+        val listVoyage = voyageService.findAllActiveItems()
+        val result = listVoyage.map {
+            dtoBuilder.buildVoyageDto(it) }
+        return restResponse.restSuccess(result)
+    }
 }

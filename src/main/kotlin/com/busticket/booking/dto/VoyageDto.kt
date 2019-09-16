@@ -1,5 +1,6 @@
 package com.busticket.booking.dto
 
+import com.busticket.booking.entity.ScheduleTemplate
 import com.busticket.booking.entity.VoyagePart
 
 class VoyageDto(
@@ -8,6 +9,7 @@ class VoyageDto(
         val createdAt: Long,
         val updatedAt: Long,
         val status: Int,
-        var voyageParts: List<VoyagePartDto> = listOf()
+        var voyageParts: List<VoyagePartDto> = listOf(),
+        var scheduleTemplates: List<ScheduleTemplateDto> = listOf()
 ) {
 }
