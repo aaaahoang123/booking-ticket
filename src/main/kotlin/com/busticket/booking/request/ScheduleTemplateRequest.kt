@@ -9,6 +9,6 @@ class ScheduleTemplateRequest(
         @field:NotNull
         var timeEnd: Long,
         @field:NotNull
-        var listVoyage: Array<Int>
+        var listVoyageIds: List<Int> = listOf()
 ) {
 }

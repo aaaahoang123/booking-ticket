@@ -27,7 +27,7 @@ class VehicleServiceImpl @Autowired constructor(
 
     override fun create(dto: Any): Vehicle {
         dto as VehicleRequest
-        val vehicle = assignObject(Vehicle(vehicleCategory = vehicleCategoryRepository.getOne(dto.category_id)), dto)
+        val vehicle = assignObject(Vehicle(vehicleCategory = vehicleCategoryRepository.getOne(dto.category_id), vehicleCategoryId = dto.category_id), dto)
         return primaryRepo.save(vehicle)
     }
 

@@ -2,12 +2,14 @@ package com.busticket.booking.service.impl
 
 import com.busticket.booking.entity.ScheduleTemplate
 import com.busticket.booking.lib.assignObject
+import com.busticket.booking.lib.exception.ExecuteException
 import com.busticket.booking.repository.schedule.ScheduleTemplateRepository
 import com.busticket.booking.repository.voyage.VoyageRepository
 import com.busticket.booking.request.ScheduleTemplateRequest
 import com.busticket.booking.service.interfaces.ScheduleTemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.concurrent.ExecutionException
 import kotlin.reflect.KClass
 
 @Service
@@ -27,8 +29,21 @@ class ScheduleTemplateServiceImpl @Autowired constructor(
     override fun create(dto: Any): ScheduleTemplate {
         dto as ScheduleTemplateRequest
         val scheduleTemplate = assignObject(ScheduleTemplate(), dto)
-        val voyages = dto.listVoyage.map { voyageRepository.getOne(it) }.toSet()
+        val voyages = dto.listVoyageIds.map { voyageRepository.getOne(it) }.toSet()
         scheduleTemplate.voyages = voyages
+        return primaryRepo.save(scheduleTemplate)
+    }
+
+    override fun edit(id: Int, dto: Any): ScheduleTemplate {
+        dto as ScheduleTemplateRequest
+        val scheduleTemplateExist = scheduleTemplateRepository.findById(id)
+        if (!scheduleTemplateExist.isPresent) {
+            throw ExecuteException("not_found")
+        }
+        val scheduleTemplate = assignObject(scheduleTemplateExist.get(), dto)
+        val voyages = voyageRepository.findByIdIsIn(dto.listVoyageIds)
+        val a = voyages.toMutableSet()
+        scheduleTemplate.voyages = voyages.toSet()
         return primaryRepo.save(scheduleTemplate)
     }
 }
