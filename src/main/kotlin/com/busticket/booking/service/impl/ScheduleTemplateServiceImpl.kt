@@ -1,13 +1,16 @@
 package com.busticket.booking.service.impl
 
 import com.busticket.booking.entity.ScheduleTemplate
+import com.busticket.booking.entity.Voyage
 import com.busticket.booking.lib.assignObject
 import com.busticket.booking.lib.exception.ExecuteException
+import com.busticket.booking.repository.fetchRelation
 import com.busticket.booking.repository.schedule.ScheduleTemplateRepository
 import com.busticket.booking.repository.voyage.VoyageRepository
 import com.busticket.booking.request.ScheduleTemplateRequest
 import com.busticket.booking.service.interfaces.ScheduleTemplateService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.util.concurrent.ExecutionException
 import kotlin.reflect.KClass
@@ -42,8 +45,13 @@ class ScheduleTemplateServiceImpl @Autowired constructor(
         }
         val scheduleTemplate = assignObject(scheduleTemplateExist.get(), dto)
         val voyages = voyageRepository.findByIdIsIn(dto.listVoyageIds)
-        val a = voyages.toMutableSet()
-        scheduleTemplate.voyages = voyages.toSet()
+        scheduleTemplate.voyages = voyages.toMutableSet()
         return primaryRepo.save(scheduleTemplate)
+    }
+
+    override fun singleById(id: Int): ScheduleTemplate {
+//        val spec = Specification.where(fetchRelation<ScheduleTemplate, Voyage>("voyages"))
+        return scheduleTemplateRepository.getById(id)
+//        return scheduleTemplateRepository.findAll(spec).first()
     }
 }

@@ -40,4 +40,19 @@ class ScheduleTemplateController @Autowired constructor(
         val result = dtoBuilder.buildScheduleTemplateDto(scheduleTemplate)
         return restResponse.restSuccess(result)
     }
+
+    @GetMapping(value = ["/{id}"])
+    fun getScheduleTemplateById(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        println(id)
+        val scheduleTemplate = scheduleTemplateService.singleById(id)
+        val result = dtoBuilder.buildScheduleTemplateDto(scheduleTemplate)
+        return restResponse.restSuccess(result)
+    }
+
+    @DeleteMapping(value = ["/{id}"])
+    fun deleteScheduleTemplateById(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val scheduleTemplate = scheduleTemplateService.delete(id)
+        val result = dtoBuilder.buildScheduleTemplateDto(scheduleTemplate)
+        return restResponse.restSuccess(result)
+    }
 }

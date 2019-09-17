@@ -134,7 +134,7 @@ class DtoBuilderServiceImpl @Autowired constructor(
     }
 
     override fun buildScheduleTemplateDto(scheduleTemplate: ScheduleTemplate): ScheduleTemplateDto {
-        return ScheduleTemplateDto(
+        val result = ScheduleTemplateDto(
                 id = scheduleTemplate.id!!,
                 timeStart = scheduleTemplate.timeStart!!,
                 timeEnd = scheduleTemplate.timeEnd!!,
@@ -146,5 +146,8 @@ class DtoBuilderServiceImpl @Autowired constructor(
 
 
         )
+        if (Hibernate.isInitialized(scheduleTemplate.voyages))
+            result.voyages = scheduleTemplate.voyages.map { buildVoyageDto(it) }.toSet()
+        return result
     }
 }
