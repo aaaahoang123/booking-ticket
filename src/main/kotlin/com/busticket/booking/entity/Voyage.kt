@@ -19,4 +19,6 @@ data class Voyage(
         var voyageParts: Set<VoyagePart>? = mutableSetOf()
         @ManyToMany(mappedBy = "voyages")
         var scheduleTemplates: Set<ScheduleTemplate> = mutableSetOf()
+        @OneToMany(mappedBy = "voyage")
+        var schedules: Set<Schedule>? = mutableSetOf()
 }

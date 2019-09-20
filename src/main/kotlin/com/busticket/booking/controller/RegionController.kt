@@ -1,6 +1,8 @@
 package com.busticket.booking.controller
 
 import com.busticket.booking.API_PREFIX
+import com.busticket.booking.entity.User
+import com.busticket.booking.lib.auth.ReqUser
 import com.busticket.booking.lib.rest.RestResponseService
 import com.busticket.booking.service.interfaces.*
 import org.springframework.beans.factory.annotation.Autowired

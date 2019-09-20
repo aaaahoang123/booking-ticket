@@ -22,4 +22,6 @@ class Vehicle(
         @Column(columnDefinition = "tinyint default 1")
         var status: Int = CommonStatus.ACTIVE.value
 ) {
+    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
+    var schedules: Set<Schedule>? = mutableSetOf()
 }

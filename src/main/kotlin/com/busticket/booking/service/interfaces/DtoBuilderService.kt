@@ -14,4 +14,5 @@ interface DtoBuilderService {
     fun buildDistrictDto(district: District): DistrictDto
     fun buildStreetDto(street: Street): StreetDto
     fun buildScheduleTemplateDto(scheduleTemplate: ScheduleTemplate): ScheduleTemplateDto
+    fun buildScheduleDto(schedule: Schedule): ScheduleDto
 }

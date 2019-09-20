@@ -150,4 +150,41 @@ class DtoBuilderServiceImpl @Autowired constructor(
             result.voyages = scheduleTemplate.voyages.map { buildVoyageDto(it) }.toSet()
         return result
     }
+
+    override fun buildScheduleDto(schedule: Schedule): ScheduleDto {
+        val result = ScheduleDto(
+                id = schedule.id!!,
+                startTime = schedule.startTime,
+                endTime = schedule.endTime,
+                scheduleTemplateId = schedule.scheduleTemplateId,
+                vehicleCategoryId = schedule.vehicleCategoryId,
+                vehicleId = schedule.vehicleId,
+                voyageId = schedule.voyageId,
+                driverId = schedule.driverId,
+                createdById = schedule.createdById,
+                createdAt = schedule.createdAt,
+                updatedAt = schedule.updatedAt,
+                createdAtStr = format(schedule.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(schedule.updatedAt, CLIENT_DATE_FORMAT),
+                status = schedule.status
+        )
+        if (Hibernate.isInitialized(schedule.scheduleTemplate)) {
+            result.scheduleTemplate = buildScheduleTemplateDto(schedule.scheduleTemplate!!)
+        }
+        if (Hibernate.isInitialized(schedule.vehicleCategory)) {
+            result.vehicleCategory = schedule.vehicleCategory?.let { buildVehicleCategoryDto(it) }
+        }
+        if (Hibernate.isInitialized(schedule.voyage)) {
+            result.voyage = buildVoyageDto(schedule.voyage!!)
+        }
+        if (Hibernate.isInitialized(schedule.vehicle)) {
+            result.vehicle = schedule.vehicle?.let { buildVehicleDto(it) }
+        }
+        if (Hibernate.isInitialized(schedule.driver)) {
+            result.driver = schedule.driver?.let { buildUserDto(it) }
+        }
+        return result
+    }
+
+
 }

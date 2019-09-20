@@ -5,6 +5,7 @@ import com.busticket.booking.entity.Voyage
 import com.busticket.booking.lib.assignObject
 import com.busticket.booking.lib.exception.ExecuteException
 import com.busticket.booking.repository.fetchRelation
+import com.busticket.booking.repository.hasStatus
 import com.busticket.booking.repository.schedule.ScheduleTemplateRepository
 import com.busticket.booking.repository.voyage.VoyageRepository
 import com.busticket.booking.request.ScheduleTemplateRequest
@@ -53,5 +54,12 @@ class ScheduleTemplateServiceImpl @Autowired constructor(
 //        val spec = Specification.where(fetchRelation<ScheduleTemplate, Voyage>("voyages"))
         return scheduleTemplateRepository.getById(id)
 //        return scheduleTemplateRepository.findAll(spec).first()
+    }
+
+    override fun findAllActiveItems(): List<ScheduleTemplate> {
+        return scheduleTemplateRepository.findAll(
+                Specification.where(hasStatus<ScheduleTemplate>())
+                        .and(fetchRelation<ScheduleTemplate, Voyage>("voyages"))
+        )
     }
 }

@@ -4,21 +4,60 @@ import com.busticket.booking.lib.exception.ExecuteException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun <T> parse(input: T, format: String = "yyyy-M-dd hh:mm:ss"): Date {
-    if (input is Number) {
-        return Date(input.toLong())
-    } else if (input is String) {
-        val sdf = SimpleDateFormat(format)
-        return sdf.parse(input)
-    }
-    throw ExecuteException("Date input not supported, parse method accept only Long type or String type input")
+fun parse(input: Long, format: String = "yyyy-M-dd hh:mm:ss"): Calendar {
+    val cal = Calendar.getInstance()
+    cal.time = Date(input)
+    return cal
 }
 
-fun <T> format(input: T, format: String = "yyyy-M-dd hh:mm:ss"): String {
-    val resource = when (input) {
-        is Number -> parse(input)
-        is Date -> input
-        else -> throw ExecuteException("Date input not supported, format method accept only Long type or Date type input")
-    }
-    return SimpleDateFormat(format).format(resource)
+fun parse(input: String, format: String = "yyyy-M-dd hh:mm:ss"): Calendar {
+    val cal = Calendar.getInstance()
+    val sdf = SimpleDateFormat(format)
+    cal.time = sdf.parse(input)
+    return cal
+}
+
+fun format(input: Long, format: String = "yyyy-M-dd hh:mm:ss"): String {
+
+    return SimpleDateFormat(format).format(parse(input).time)
+}
+
+fun format(input: String, format: String = "yyyy-M-dd hh:mm:ss"): String {
+    return SimpleDateFormat(format).format(parse(input))
+}
+
+fun format(input: Calendar, format: String = "yyyy-M-dd hh:mm:ss"): String {
+    return SimpleDateFormat(format).format(input)
+}
+
+fun format(input: Date, format: String = "yyyy-M-dd hh:mm:ss"): String {
+    return SimpleDateFormat(format).format(input)
+}
+
+fun startOfDay(date: Calendar): Calendar {
+    val calendar = Calendar.getInstance()
+    calendar.time = date.time
+    calendar.set(Calendar.HOUR, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar
+}
+
+fun startOfDay(date: Long): Calendar {
+    return startOfDay(parse(date))
+}
+
+fun endOfDay(date: Calendar): Calendar {
+    val calendar = Calendar.getInstance()
+    calendar.time = date.time
+    calendar.set(Calendar.HOUR, 23)
+    calendar.set(Calendar.MINUTE, 59)
+    calendar.set(Calendar.SECOND, 59)
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar
+}
+
+fun endOfDay(date: Long): Calendar {
+    return endOfDay(parse(date))
 }
