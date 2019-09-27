@@ -15,4 +15,8 @@ interface DtoBuilderService {
     fun buildStreetDto(street: Street): StreetDto
     fun buildScheduleTemplateDto(scheduleTemplate: ScheduleTemplate): ScheduleTemplateDto
     fun buildScheduleDto(schedule: Schedule): ScheduleDto
+    fun buildCustomerTypeDto(customerType: CustomerType): CustomerTypeDto
+    fun buildCustomerDto(customer: Customer): CustomerDto
+    fun buildOrderDto(order: Order): OrderDto
+    fun buildOrderDetailDto(orderDetail: OrderDetail): OrderDetailDto
 }

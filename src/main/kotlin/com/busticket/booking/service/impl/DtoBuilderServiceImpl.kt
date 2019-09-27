@@ -186,5 +186,78 @@ class DtoBuilderServiceImpl @Autowired constructor(
         return result
     }
 
+    override fun buildCustomerTypeDto(customerType: CustomerType): CustomerTypeDto {
+        return CustomerTypeDto(
+                id = customerType.id!!,
+                name = customerType.name,
+                description = customerType.description,
+                discount = customerType.discount,
+                createdAt = customerType.createdAt,
+                updatedAt = customerType.updatedAt,
+                createdAtStr = format(customerType.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(customerType.updatedAt, CLIENT_DATE_FORMAT),
+                status = customerType.status
+        )
+    }
 
+    override fun buildCustomerDto(customer: Customer): CustomerDto {
+        return CustomerDto(
+                id = customer.id!!,
+                name = customer.name,
+                phoneNumber = customer.phoneNumber,
+                createdAt = customer.createdAt,
+                updatedAt = customer.updatedAt,
+                createdAtStr = format(customer.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(customer.updatedAt, CLIENT_DATE_FORMAT),
+                status = customer.status
+        )
+    }
+
+    override fun buildOrderDetailDto(orderDetail: OrderDetail): OrderDetailDto {
+        val result = OrderDetailDto(
+                orderId = orderDetail.orderId,
+                vehicleCategoryId = orderDetail.vehicleCategoryId,
+                customerTypeId = orderDetail.customerTypeId!!,
+                unitPrice = orderDetail.unitPrice!!,
+                originTotalPrice = orderDetail.originToTalPrice!!,
+                totalPrice = orderDetail.totalPrice!!,
+                quantity = orderDetail.quantity!!,
+                discount = orderDetail.discount!!,
+                travelFromId = orderDetail.travelFromId,
+                travelToId = orderDetail.travelToId,
+                createdAt = orderDetail.createdAt,
+                updatedAt = orderDetail.updatedAt,
+                createdAtStr = format(orderDetail.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(orderDetail.updatedAt, CLIENT_DATE_FORMAT),
+                status = orderDetail.status
+        )
+//        if (Hibernate.isInitialized(orderDetail.customerType)) {
+//            result.customerType = buildCustomerTypeDto(orderDetail.customerType!!)
+//        }
+        return result
+    }
+
+    override fun buildOrderDto(order: Order): OrderDto {
+        val result =  OrderDto(
+                id = order.id!!,
+                customerId = order.customerId,
+                scheduleId = order.scheduleId,
+                createdById = order.createdById,
+                finalPrice = order.finalPrice!!,
+                paidStatus = order.paidStatus!!,
+                orderDetails = order.orderDetail.map { buildOrderDetailDto(it) },
+                createdAt = order.createdAt,
+                updatedAt = order.updatedAt,
+                createdAtStr = format(order.createdAt, CLIENT_DATE_FORMAT),
+                updatedAtStr = format(order.updatedAt, CLIENT_DATE_FORMAT),
+                status = order.status
+        )
+        if(Hibernate.isInitialized(order.customer)) {
+            result.customer = buildCustomerDto(order.customer!!)
+        }
+        if (Hibernate.isInitialized(order.createdBy)) {
+            result.createdBy = buildUserDto(order.createdBy!!)
+        }
+        return result
+    }
 }

@@ -25,4 +25,7 @@ class User(
         @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinColumn(name = "policyId", columnDefinition = "int default 0")
         var policy: UserPolicy? = null
-)
+) {
+        @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
+        var orders: Set<Order> = mutableSetOf()
+}

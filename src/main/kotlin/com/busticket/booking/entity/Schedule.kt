@@ -49,4 +49,6 @@ data class Schedule(
         var status: Int = CommonStatus.ACTIVE.value
 
 ) {
+        @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY)
+        var orders: Set<Order> = mutableSetOf()
 }
