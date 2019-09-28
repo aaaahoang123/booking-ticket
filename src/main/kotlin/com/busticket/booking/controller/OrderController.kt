@@ -1,6 +1,7 @@
 package com.busticket.booking.controller
 
 import com.busticket.booking.API_PREFIX
+import com.busticket.booking.dto.PaginationDto
 import com.busticket.booking.entity.Customer
 import com.busticket.booking.entity.Order
 import com.busticket.booking.entity.User
@@ -24,12 +25,6 @@ class OrderController @Autowired constructor(
         private val dtoBuilder: DtoBuilderService,
         private val restResponse: RestResponseService
 ) {
-    //    @PostMapping
-//    fun createOrder(@RequestBody @Valid dto: OrderRequest, @ReqUser user: User): ResponseEntity<Any> {
-//        val order = orderService.create(user, dto)
-//        val result = dtoBuilder.buildOrderDto(order)
-//        return restResponse.restSuccess(result)
-//    }
     @PostMapping
     fun createOrder(@RequestBody @Valid dto: OrderRequest, @ReqUser user: User): ResponseEntity<Any> {
         val order = orderService.create(user, dto)
@@ -44,10 +39,43 @@ class OrderController @Autowired constructor(
         return restResponse.restSuccess(result)
     }
 
+    @GetMapping(value = ["/{id}"])
+    fun getOrder(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val order = orderService.singleById(id)
+        val result = dtoBuilder.buildOrderDto(order)
+        return restResponse.restSuccess(result)
+    }
+
     @DeleteMapping(value = ["/{id}"])
     fun deleteOrder(@PathVariable("id") id: Int): ResponseEntity<Any> {
         val order = orderService.delete(id)
         val result = dtoBuilder.buildOrderDto(order)
         return restResponse.restSuccess(result)
+    }
+
+    @PostMapping("/calculate")
+    fun orderCalculate(@RequestBody @Valid dto: OrderRequest, @ReqUser user: User): ResponseEntity<Any> {
+        val order = orderService.buildOderDetails(dto)
+        return restResponse.restSuccess(mapOf(
+                "totalPrice" to orderService.calculateFinalPrice(order)
+        ))
+    }
+
+    @GetMapping("/search")
+    fun search(@RequestParam("customerId") customerId: Int? = null,
+               @RequestParam("createdById") createdById: Int? = null,
+               @RequestParam("scheduleId") scheduleId: Int? = null,
+               @RequestParam("paidStatus") paidStatus: Int? = null,
+               @RequestParam("status") status: Int? = null,
+               @RequestParam("page") page: Int? = null,
+               @RequestParam("limit") limit: Int? = null
+               ): ResponseEntity<Any> {
+
+        val realPage = page ?: 0
+        val realLimit = limit ?: 20
+        val orders = orderService.search(customerId, createdById, scheduleId, paidStatus, status, realPage, realLimit)
+        val result = orders.content.map { dtoBuilder.buildOrderDto(it) }
+        val pagination = PaginationDto(orders, realPage, realLimit)
+        return restResponse.restSuccess(result, pagination)
     }
 }
