@@ -3,6 +3,7 @@ package com.busticket.booking.controller
 import com.busticket.booking.API_PREFIX
 import com.busticket.booking.dto.PaginationDto
 import com.busticket.booking.entity.User
+import com.busticket.booking.enum.role.ROLE_MANAGER_SCHEDULE
 import com.busticket.booking.lib.auth.ReqUser
 import com.busticket.booking.lib.rest.RestResponseService
 import com.busticket.booking.request.ScheduleRequest
@@ -12,6 +13,7 @@ import com.busticket.booking.service.interfaces.ScheduleService
 import org.hibernate.annotations.Parameter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 import kotlin.streams.toList
@@ -19,6 +21,7 @@ import kotlin.streams.toList
 @RestController
 @CrossOrigin
 @RequestMapping(value = ["$API_PREFIX/schedules"])
+@Secured(ROLE_MANAGER_SCHEDULE)
 class ScheduleController @Autowired constructor(
         private val scheduleService: ScheduleService,
         private val dtoBuilder: DtoBuilderService,
@@ -28,13 +31,6 @@ class ScheduleController @Autowired constructor(
     fun createSchedule(@RequestBody @Valid dto: ScheduleRequest, @ReqUser user: User): ResponseEntity<Any> {
         val schedule = scheduleService.create(user, dto)
         val result = dtoBuilder.buildScheduleDto(schedule)
-        return restResponse.restSuccess(result)
-    }
-
-    @GetMapping
-    fun listSchedule(): ResponseEntity<Any> {
-        val schedules = scheduleService.findAllActiveItems()
-        val result = schedules.map { dtoBuilder.buildScheduleDto(it) }
         return restResponse.restSuccess(result)
     }
 

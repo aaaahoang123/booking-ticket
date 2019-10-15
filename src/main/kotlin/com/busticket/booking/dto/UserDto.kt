@@ -15,5 +15,6 @@ class UserDto(
         var updatedAt: Long,
         var createdAtStr: String,
         var updatedAtStr: String,
-        var accessToken: String? = null
+        var accessToken: String? = null,
+        var policy: Map<String, Any?> = mapOf()
 )

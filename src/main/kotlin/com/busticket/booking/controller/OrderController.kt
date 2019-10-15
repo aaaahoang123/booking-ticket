@@ -5,6 +5,7 @@ import com.busticket.booking.dto.PaginationDto
 import com.busticket.booking.entity.Customer
 import com.busticket.booking.entity.Order
 import com.busticket.booking.entity.User
+import com.busticket.booking.enum.role.ROLE_MANAGER_ORDER
 import com.busticket.booking.lib.auth.ReqUser
 import com.busticket.booking.lib.rest.RestResponseService
 import com.busticket.booking.request.OrderRequest
@@ -14,12 +15,14 @@ import com.busticket.booking.service.interfaces.OrderService
 import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
 @CrossOrigin
 @RequestMapping("$API_PREFIX/orders")
+@Secured(ROLE_MANAGER_ORDER)
 class OrderController @Autowired constructor(
         private val orderService: OrderService,
         private val dtoBuilder: DtoBuilderService,

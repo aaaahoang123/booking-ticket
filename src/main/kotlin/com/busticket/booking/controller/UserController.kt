@@ -2,6 +2,7 @@ package com.busticket.booking.controller
 
 import com.busticket.booking.API_PREFIX
 import com.busticket.booking.entity.User
+import com.busticket.booking.enum.role.ROLE_MANAGER_USER
 import com.busticket.booking.lib.auth.ReqUser
 import com.busticket.booking.lib.exception.ExecuteException
 import com.busticket.booking.lib.rest.RestResponseService
@@ -18,8 +19,8 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["$API_PREFIX/users"])
-@Secured
 @CrossOrigin
+@Secured(ROLE_MANAGER_USER)
 class UserController @Autowired constructor(
         private val dtoBuilder: DtoBuilderService,
         private val responseService: RestResponseService,
@@ -38,11 +39,6 @@ class UserController @Autowired constructor(
     @GetMapping(value = ["/single"])
     fun singleUser(@RequestParam("id") id: Int): ResponseEntity<Any> {
         return responseService.restSuccess(dtoBuilder.buildUserDto(userService.singleById(id)))
-    }
-
-    @GetMapping(value = ["/list"])
-    fun listUsers(): ResponseEntity<Any> {
-        return responseService.restSuccess(userService.findAllActiveItems().map { u -> dtoBuilder.buildUserDto(u) })
     }
 
     @PostMapping(value = ["/edit"])
