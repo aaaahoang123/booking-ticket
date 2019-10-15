@@ -30,7 +30,6 @@ class AppExceptionHandler @Autowired constructor(
 
     @ExceptionHandler(ExecuteException::class)
     fun handleDefaultException(e: ExecuteException): ResponseEntity<Any> {
-        println("vcl")
         return restResponseService.restError(e.message ?: "failed", e.status, e.messageArgs)
     }
 

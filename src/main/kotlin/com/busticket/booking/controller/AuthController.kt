@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping(value = ["/auth"])
+@RequestMapping(value = ["/ap/auth"])
 @CrossOrigin
 class AuthController @Autowired constructor(
         private val authService: AuthService,

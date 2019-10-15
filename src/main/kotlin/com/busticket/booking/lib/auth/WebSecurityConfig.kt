@@ -63,8 +63,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter::class.java)
                 .authorizeRequests()
-                .requestMatchers(_protectedUrls)
-                .authenticated()
+                .requestMatchers(_protectedUrls).authenticated()
                 .and()
                 .cors()
                 .and()
@@ -76,6 +75,6 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     override fun configure(web: WebSecurity) {
         web.ignoring()
-                .antMatchers("/auth/**", "/upload/**", "/upload")
+                .antMatchers("/ap/auth/login", "/upload/**", "/upload")
     }
 }
