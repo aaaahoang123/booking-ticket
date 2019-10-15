@@ -5,6 +5,8 @@ class OrderDetailDto(
         var vehicleCategoryId: Int? = null,
 //        var customerType: CustomerTypeDto? = null,
         var customerTypeId: Int,
+        var travelFrom: VoyagePartDto? = null,
+        var travelTo: VoyagePartDto? = null,
         var travelFromId: Int? = null,
         var travelToId: Int? = null,
         var unitPrice: Int,

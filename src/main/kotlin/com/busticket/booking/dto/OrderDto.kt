@@ -4,7 +4,7 @@ class OrderDto(
         var id: Int,
         var customer: CustomerDto? = null,
         var createdBy: UserDto? = null,
-//        var schedule: ScheduleDto? = null,
+        var schedule: ScheduleDto? = null,
         var finalPrice: Double,
         var paidStatus: Int,
         var orderDetails: List<OrderDetailDto>? = mutableListOf(),

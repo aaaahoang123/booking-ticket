@@ -231,9 +231,12 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 updatedAtStr = format(orderDetail.updatedAt, CLIENT_DATE_FORMAT),
                 status = orderDetail.status
         )
-//        if (Hibernate.isInitialized(orderDetail.customerType)) {
-//            result.customerType = buildCustomerTypeDto(orderDetail.customerType!!)
-//        }
+        if (Hibernate.isInitialized(orderDetail.travelFrom)) {
+            result.travelFrom = buildVoyagePartDto(orderDetail.travelFrom!!)
+        }
+        if (Hibernate.isInitialized(orderDetail.travelTo)) {
+            result.travelTo = buildVoyagePartDto(orderDetail.travelTo!!)
+        }
         return result
     }
 
@@ -257,6 +260,9 @@ class DtoBuilderServiceImpl @Autowired constructor(
         }
         if (Hibernate.isInitialized(order.createdBy)) {
             result.createdBy = buildUserDto(order.createdBy!!)
+        }
+        if (Hibernate.isInitialized(order.schedule)) {
+            result.schedule = buildScheduleDto(order.schedule!!)
         }
         return result
     }

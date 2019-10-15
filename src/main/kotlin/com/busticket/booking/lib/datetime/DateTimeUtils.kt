@@ -37,14 +37,17 @@ fun format(input: Date, format: String = "yyyy-M-dd hh:mm:ss"): String {
 fun startOfDay(date: Calendar): Calendar {
     val calendar = Calendar.getInstance()
     calendar.time = date.time
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.HOUR, 0)
     calendar.set(Calendar.MINUTE, 0)
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
+    calendar.set(Calendar.AM_PM, 0)
     return calendar
 }
 
 fun startOfDay(date: Long): Calendar {
+
     return startOfDay(parse(date))
 }
 

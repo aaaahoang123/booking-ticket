@@ -106,6 +106,8 @@ class OrderServiceImpl @Autowired constructor(
         return dto.orderDetailRequest.map {
             val vehicleCategory = vehicleCategoryRepo.findById(it.vehicleCategoryId).get()
             val customerType = customerTypeRepo.findById(it.customerTypeId).get()
+            println("1:" + it.travelFromId)
+            println("1:" + it.travelToId)
             val travelFrom = voyagePartRepo.findById(it.travelFromId).get()
             val travelTo = voyagePartRepo.findById(it.travelToId).get()
             val voyagePart = voyagePartRepo.findByOrderNumberBetween(schedule.voyage!!, travelFrom.orderNumber, travelTo.orderNumber)
@@ -120,6 +122,8 @@ class OrderServiceImpl @Autowired constructor(
             println("distance: $distance")
             assignObject(
                     OrderDetail(
+                            travelFrom = travelFrom,
+                            travelTo = travelTo,
                             vehicleCategory = vehicleCategory,
                             customerType = customerType,
                             unitPrice = vehicleCategory.price,

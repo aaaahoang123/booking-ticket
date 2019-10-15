@@ -22,14 +22,14 @@ class OrderDetail(
         var totalPrice: Double? = null,
         var quantity: Int? = null,
         var discount: Int? = null,
-        var travelFromId: Int? = null,
-        var travelToId: Int? = null,
-//        @ManyToOne
-//        @JoinColumn(name = "travel_from_id")
-//        var travelFrom: VoyagePart? = null,
-//        @ManyToOne
-//        @JoinColumn(name = "travel_to_id")
-//        var travelTo: VoyagePart? = null,
+//        var travelFromId: Int? = null,
+//        var travelToId: Int? = null,
+        @ManyToOne
+        @JoinColumn(name = "travel_from_id")
+        var travelFrom: VoyagePart? = null,
+        @ManyToOne
+        @JoinColumn(name = "travel_to_id")
+        var travelTo: VoyagePart? = null,
 
         @Column(name = "order_id", insertable = false, updatable = false)
         var orderId: Int? = null,
@@ -39,6 +39,12 @@ class OrderDetail(
 
         @Column(name = "customer_type_id", insertable = false, updatable = false)
         var customerTypeId: Int? = null,
+
+        @Column(name = "travel_from_id", insertable = false, updatable = false)
+        var travelFromId: Int? = null,
+
+        @Column(name = "travel_to_id", insertable = false, updatable = false)
+        var travelToId: Int? = null,
 
         var createdAt: Long = System.currentTimeMillis(),
         var updatedAt: Long = System.currentTimeMillis(),

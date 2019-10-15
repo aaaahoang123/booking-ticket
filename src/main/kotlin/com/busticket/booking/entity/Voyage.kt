@@ -16,8 +16,9 @@ data class Voyage(
         var status: Int = CommonStatus.ACTIVE.value
 ) {
         @OneToMany(mappedBy = "voyage", cascade = [CascadeType.ALL])
+        @OrderBy("orderNumber asc")
         var voyageParts: Set<VoyagePart>? = mutableSetOf()
-        @ManyToMany(mappedBy = "voyages")
+        @ManyToMany(mappedBy = "voyages", fetch = FetchType.LAZY)
         var scheduleTemplates: Set<ScheduleTemplate> = mutableSetOf()
         @OneToMany(mappedBy = "voyage")
         var schedules: Set<Schedule>? = mutableSetOf()

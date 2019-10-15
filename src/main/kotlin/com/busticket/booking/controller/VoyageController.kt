@@ -1,6 +1,10 @@
 package com.busticket.booking.controller
 
 import com.busticket.booking.API_PREFIX
+import com.busticket.booking.dto.StreetDto
+import com.busticket.booking.dto.VoyagePartDto
+import com.busticket.booking.entity.Street
+import com.busticket.booking.entity.VoyagePart
 import com.busticket.booking.lib.rest.RestResponseService
 import com.busticket.booking.request.VoyageRequest
 import com.busticket.booking.service.interfaces.DtoBuilderService
@@ -29,7 +33,30 @@ class VoyageController @Autowired constructor(
     fun listVoyage(): ResponseEntity<Any> {
         val listVoyage = voyageService.findAllActiveItems()
         val result = listVoyage.map {
-            dtoBuilder.buildVoyageDto(it) }
+            dtoBuilder.buildVoyageDto(it)
+        }
         return restResponse.restSuccess(result)
+    }
+
+    @GetMapping(value = ["/{id}"])
+    fun getVoyage(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val voyage = voyageService.getById(id).get()
+        val result = dtoBuilder.buildVoyageDto(voyage)
+        return restResponse.restSuccess(result)
+    }
+
+    @GetMapping(value = ["/{id}/part"])
+    fun getPartFromTo(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        val voyage = voyageService.getById(id).get()
+        val partsVoyageFrom = mutableListOf<StreetDto>()
+        val partVoyageTo = mutableListOf<StreetDto>()
+        voyage.voyageParts?.forEach {
+            partsVoyageFrom.add(dtoBuilder.buildStreetDto(it.from!!))
+            partVoyageTo.add(dtoBuilder.buildStreetDto(it.to!!))
+        }
+        return restResponse.restSuccess(mapOf(
+                "partsVoyageFrom" to partsVoyageFrom,
+                "partVoyageTo" to partVoyageTo
+        ))
     }
 }

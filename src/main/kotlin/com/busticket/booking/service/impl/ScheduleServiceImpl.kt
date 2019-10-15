@@ -49,6 +49,7 @@ class ScheduleServiceImpl @Autowired constructor(
         val startOfDay = startOfDay(dto.scheduleDate!!).timeInMillis
         schedule.startTime = startOfDay + template.timeStart!!
         schedule.endTime = startOfDay + template.timeEnd!!
+        println("123: $startOfDay")
         schedule.scheduleTemplate = template
 
         schedule.driver = dto.driverId?.let { userRepository.findById(it).orElse(null) }

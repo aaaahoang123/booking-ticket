@@ -14,6 +14,7 @@ import com.busticket.booking.service.interfaces.VoyageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import java.util.*
 import kotlin.reflect.KClass
 
 @Service
@@ -64,5 +65,9 @@ class VoyageServiceImpl @Autowired constructor(
 
     override fun findAllActiveItems(): List<Voyage> {
         return voyageRepository.getAllAndJoin()
+    }
+
+    override fun getById(id: Int): Optional<Voyage> {
+        return voyageRepository.getById(id)
     }
 }
