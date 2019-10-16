@@ -9,4 +9,7 @@ import java.util.*
 interface CustomerRepository : BaseRepository<Customer, Int> {
     @Query("select c from Customer c where c.phoneNumber = :phoneNumber and c.status = 1")
     fun findByPhoneNumber(@Param("phoneNumber") phoneNumber: String): Optional<Customer>
+
+    @Query("select distinct c from Customer c inner join c.orders")
+    fun getAllAndJoin(): List<Customer>
 }
