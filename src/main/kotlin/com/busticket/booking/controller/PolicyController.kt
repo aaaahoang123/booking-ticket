@@ -14,37 +14,27 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = ["$API_PREFIX/policies"])
 @Secured(ROLE_MANAGER_POLICY)
-@CrossOrigin
 class PolicyController @Autowired constructor(
         private val policyService: PolicyService,
         private val dtoBuilder: DtoBuilderService,
         private val restResponse: RestResponseService
 ) {
-    @GetMapping(value = ["/roles"])
-    fun listRoles(): ResponseEntity<Any> {
-        return restResponse.restSuccess(policyService.listRoles().map { dtoBuilder.buildRoleDto(it) })
-    }
-
     @PostMapping
     fun createPolicy(@RequestBody @Valid dto: PolicyRequest): ResponseEntity<Any> {
         return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.create(dto)))
     }
 
-    @PutMapping(value = ["/{id}"])
-    fun editPolicy(@PathVariable("id") id: Int, @RequestBody @Valid dto: PolicyRequest): ResponseEntity<Any> {
-        return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.edit(id, dto)))
-    }
-
-    @DeleteMapping(value = ["/{id}"])
-    fun deletePolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
-        return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.delete(id)))
-    }
-
     @GetMapping
     fun listPolicies(): ResponseEntity<Any> {
         return restResponse.restSuccess(policyService.findAllActiveItems().map { dtoBuilder.buildPolicyDto(it) })
+    }
+
+    @GetMapping(value = ["/roles"])
+    fun listRoles(): ResponseEntity<Any> {
+        return restResponse.restSuccess(policyService.listRoles().map { dtoBuilder.buildRoleDto(it) })
     }
 
     @PostMapping(value = ["/join/{id}"])
@@ -55,5 +45,15 @@ class PolicyController @Autowired constructor(
     @PostMapping(value = ["/out"])
     fun outPolicy(@RequestBody @Valid dto: OutJoinPolicyRequest): ResponseEntity<Any> {
         return restResponse.restSuccess(dtoBuilder.buildUserDto(policyService.userOutPolicy(dto.userId!!)))
+    }
+
+    @PutMapping(value = ["/{id}"])
+    fun editPolicy(@PathVariable("id") id: Int, @RequestBody @Valid dto: PolicyRequest): ResponseEntity<Any> {
+        return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.edit(id, dto)))
+    }
+
+    @DeleteMapping(value = ["/{id}"])
+    fun deletePolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.delete(id)))
     }
 }
