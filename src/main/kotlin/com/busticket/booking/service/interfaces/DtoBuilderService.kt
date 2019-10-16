@@ -19,4 +19,6 @@ interface DtoBuilderService {
     fun buildCustomerDto(customer: Customer): CustomerDto
     fun buildOrderDto(order: Order): OrderDto
     fun buildOrderDetailDto(orderDetail: OrderDetail): OrderDetailDto
+    fun buildPolicyDto(policy: UserPolicy): Map<String, Any?>
+    fun buildRoleDto(role: UserRole): Map<String, Any?>
 }

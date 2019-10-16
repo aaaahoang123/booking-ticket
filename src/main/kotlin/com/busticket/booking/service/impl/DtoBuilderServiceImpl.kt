@@ -37,7 +37,8 @@ class DtoBuilderServiceImpl @Autowired constructor(
                 updatedAt = user.updatedAt,
                 createdAtStr = format(user.createdAt, CLIENT_DATE_FORMAT),
                 updatedAtStr = format(user.updatedAt, CLIENT_DATE_FORMAT),
-                accessToken = token
+                accessToken = token,
+                policy = if (Hibernate.isInitialized(user.policy) && user.policy != null) buildPolicyDto(user.policy!!) else mapOf()
         )
     }
 
@@ -265,5 +266,37 @@ class DtoBuilderServiceImpl @Autowired constructor(
             result.schedule = buildScheduleDto(order.schedule!!)
         }
         return result
+    }
+
+    override fun buildPolicyDto(policy: UserPolicy): Map<String, Any?> {
+        val result = mutableMapOf(
+                "id" to policy.id,
+                "name" to policy.name,
+                "specialRole" to policy.specialRole,
+                "createdAt" to policy.createdAt,
+                "createdAtStr" to format(policy.createdAt),
+                "updatedAt" to policy.updatedAt,
+                "updatedAtStr" to format(policy.updatedAt),
+                "status" to policy.status,
+                "roles" to listOf<Any>()
+        )
+
+        if (Hibernate.isInitialized(policy.roles)) {
+            result["roles"] = policy.roles.map { buildRoleDto(it) }
+        }
+
+        return result
+    }
+
+    override fun buildRoleDto(role: UserRole): Map<String, Any?> {
+        return mapOf(
+                "id" to role.id,
+                "name" to role.name,
+                "createdAt" to role.createdAt,
+                "updatedAt" to role.updatedAt,
+                "createdAtStr" to format(role.createdAt),
+                "updatedAtStr" to format(role.updatedAt),
+                "status" to role.status
+        )
     }
 }
