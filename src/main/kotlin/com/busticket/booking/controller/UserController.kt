@@ -26,11 +26,6 @@ class UserController @Autowired constructor(
         private val responseService: RestResponseService,
         private val userService: UserService
 ) {
-    @GetMapping(value = ["/user-data"])
-    fun userData(@ReqUser user: User, req: HttpServletRequest): ResponseEntity<Any> {
-        return responseService.restSuccess(dtoBuilder.buildUserDto(user, req.getHeader(AUTHORIZATION) as String))
-    }
-
     @PostMapping(value = ["/create"])
     fun createUser(@RequestBody @Valid dto: UserRequest): ResponseEntity<Any> {
         return responseService.restSuccess(dtoBuilder.buildUserDto(userService.create(dto)))

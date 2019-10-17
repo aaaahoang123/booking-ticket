@@ -5,6 +5,7 @@ import com.busticket.booking.enum.role.ADMIN_SPECIAL_ROLE
 import com.busticket.booking.service.interfaces.AuthService
 import com.busticket.booking.repository.hasStatus
 import com.busticket.booking.repository.role.UserRoleRepository
+import com.busticket.booking.service.interfaces.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.security.core.Authentication
@@ -24,7 +25,7 @@ class JwtAuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthentic
     @Autowired
     private lateinit var authService: AuthService
     @Autowired
-    private lateinit var userRoleRepository: UserRoleRepository
+    private lateinit var userService: UserService
 
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
         val token = request.getHeader(AUTHORIZATION)?.trim()
@@ -35,7 +36,7 @@ class JwtAuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthentic
                 request.getAttribute(USER_ATTR_NAME) != null -> request.getAttribute(USER_ATTR_NAME)
                 token != null -> try {
                     var u = authService.decodeToken(token).get()
-                    u = fetchRolesForUser(u)
+                    u = userService.fetchRolesForUser(u)
                     request.setAttribute(USER_ATTR_NAME, u)
                     u
                 } catch (e: Exception) {
@@ -52,14 +53,5 @@ class JwtAuthenticationFilter(requestMatcher: RequestMatcher): AbstractAuthentic
     override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain, authResult: Authentication) {
         SecurityContextHolder.getContext().authentication = authResult
         chain.doFilter(request, response)
-    }
-
-    private fun fetchRolesForUser(user: User): User {
-        val policy = user.policy
-        if (policy?.specialRole == ADMIN_SPECIAL_ROLE) {
-            policy.roles = userRoleRepository.findAll(Specification.where(hasStatus())).toSet()
-        }
-        user.policy = policy
-        return user
     }
 }

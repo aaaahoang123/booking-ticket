@@ -1,8 +1,11 @@
 package com.busticket.booking.service.impl
 
 import com.busticket.booking.entity.User
+import com.busticket.booking.enum.role.ADMIN_SPECIAL_ROLE
 import com.busticket.booking.lib.assignObject
 import com.busticket.booking.lib.exception.ExecuteException
+import com.busticket.booking.repository.hasStatus
+import com.busticket.booking.repository.role.UserRoleRepository
 import com.busticket.booking.repository.user.UserRepository
 import com.busticket.booking.repository.user.userEmailEqual
 import com.busticket.booking.request.UserRequest
@@ -15,8 +18,9 @@ import kotlin.reflect.KClass
 
 @Service
 class UserServiceImpl @Autowired constructor(
-        userRepository: UserRepository,
-        private val passwordEncoder: PasswordEncoder
+        private val userRepository: UserRepository,
+        private val passwordEncoder: PasswordEncoder,
+        private val userRoleRepository: UserRoleRepository
 ) : UserService, BaseService<User, Int>() {
     init {
         this.primaryRepo = userRepository
@@ -42,5 +46,14 @@ class UserServiceImpl @Autowired constructor(
         dto.password = dto.password?.let { it -> passwordEncoder.encode(it) }
         val existed = singleById(id)
         return primaryRepo.save(assignObject(existed, dto))
+    }
+
+    override fun fetchRolesForUser(user: User): User {
+        val policy = user.policy
+        if (policy?.specialRole == ADMIN_SPECIAL_ROLE) {
+            policy.roles = userRoleRepository.findAll(Specification.where(hasStatus())).toSet()
+        }
+        user.policy = policy
+        return user
     }
 }
