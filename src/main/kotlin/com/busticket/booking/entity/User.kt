@@ -26,7 +26,7 @@ class User(
         @JoinColumn(name = "policyId", columnDefinition = "int default 0")
         var policy: UserPolicy? = null,
         @Column(insertable = false, updatable = false)
-        var policyId: Int
+        var policyId: Int? = null
 ) {
         @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY)
         var orders: Set<Order> = mutableSetOf()
