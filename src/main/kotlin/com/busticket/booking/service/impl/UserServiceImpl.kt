@@ -52,6 +52,8 @@ class UserServiceImpl @Autowired constructor(
         val policy = user.policy
         if (policy?.specialRole == ADMIN_SPECIAL_ROLE) {
             policy.roles = userRoleRepository.findAll(Specification.where(hasStatus())).toSet()
+        } else {
+            policy?.roles
         }
         user.policy = policy
         return user
