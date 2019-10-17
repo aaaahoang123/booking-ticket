@@ -72,4 +72,8 @@ class PolicyServiceImpl @Autowired constructor(
 //        val spec = Specification.where(fetchRelation<UserPolicy, Role>("roles"))
         return policyRepo.getByIdAndJoin(id).orElse(null)
     }
+
+    override fun usersOfPolicy(policyId: Int): List<User> {
+        return userRepo.findUsersByPolicyIdAndStatus(policyId)
+    }
 }

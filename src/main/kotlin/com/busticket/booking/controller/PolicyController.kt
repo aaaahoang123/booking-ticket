@@ -3,6 +3,7 @@ package com.busticket.booking.controller
 import com.busticket.booking.API_PREFIX
 import com.busticket.booking.enum.role.ROLE_MANAGER_POLICY
 import com.busticket.booking.lib.rest.RestResponseService
+import com.busticket.booking.repository.user.UserRepository
 import com.busticket.booking.request.OutJoinPolicyRequest
 import com.busticket.booking.request.PolicyRequest
 import com.busticket.booking.service.interfaces.DtoBuilderService
@@ -60,5 +61,10 @@ class PolicyController @Autowired constructor(
     @GetMapping(value = ["/{id}"])
     fun getPolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
         return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.singleById(id)))
+    }
+
+    @GetMapping(value = ["/{id}/users"])
+    fun listUsersOfPolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        return restResponse.restSuccess(policyService.usersOfPolicy(id).map { dtoBuilder.buildUserDto(it) });
     }
 }
