@@ -64,4 +64,8 @@ class PolicyServiceImpl @Autowired constructor(
         user.policy = null
         return userRepo.save(user)
     }
+
+    override fun usersOfPolicy(policyId: Int): List<User> {
+        return userRepo.findUsersByPolicyIdAndStatus(policyId)
+    }
 }

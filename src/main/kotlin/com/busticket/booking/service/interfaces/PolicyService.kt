@@ -8,4 +8,5 @@ interface PolicyService: IBaseService<UserPolicy, Int> {
     fun listRoles(): List<UserRole>
     fun userJoinPolicy(userID: Int, policyId: Int): User
     fun userOutPolicy(userID: Int): User
+    fun usersOfPolicy(policyId: Int): List<User>
 }
