@@ -56,4 +56,9 @@ class PolicyController @Autowired constructor(
     fun deletePolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
         return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.delete(id)))
     }
+
+    @GetMapping(value = ["/{id}"])
+    fun getPolicy(@PathVariable("id") id: Int): ResponseEntity<Any> {
+        return restResponse.restSuccess(dtoBuilder.buildPolicyDto(policyService.singleById(id)))
+    }
 }

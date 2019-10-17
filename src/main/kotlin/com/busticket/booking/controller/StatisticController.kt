@@ -21,13 +21,8 @@ class StatisticController @Autowired constructor(
     @GetMapping
     fun statistic(@RequestParam("from") from: Long? = null,
                   @RequestParam("to") to: Long? = null): ResponseEntity<Any> {
-        val c = Calendar.getInstance()
-        c.set(Calendar.DAY_OF_MONTH, 1)
-        c.set(Calendar.HOUR_OF_DAY, 0)
-        c.set(Calendar.MINUTE, 0)
-        c.set(Calendar.SECOND, 0)
-        val realFrom = from ?: c.timeInMillis
-        val result = orderService.statistics(realFrom, to)
+
+        val result = orderService.statistics(from, to)
 //        val result = StatisticDto(
 //                orderStatistics = ordersStatistic
 //        )

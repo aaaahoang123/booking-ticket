@@ -4,13 +4,16 @@ import com.busticket.booking.entity.User
 import com.busticket.booking.entity.UserPolicy
 import com.busticket.booking.entity.UserRole
 import com.busticket.booking.lib.exception.ExecuteException
+import com.busticket.booking.repository.fetchRelation
 import com.busticket.booking.repository.policy.UserPolicyRepository
 import com.busticket.booking.repository.role.UserRoleRepository
 import com.busticket.booking.repository.user.UserRepository
 import com.busticket.booking.request.PolicyRequest
 import com.busticket.booking.service.interfaces.PolicyService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import javax.management.relation.Role
 import kotlin.reflect.KClass
 
 @Service
@@ -18,7 +21,7 @@ class PolicyServiceImpl @Autowired constructor(
         private val policyRepo: UserPolicyRepository,
         private val roleRepo: UserRoleRepository,
         private val userRepo: UserRepository
-): PolicyService, BaseService<UserPolicy, Int>() {
+) : PolicyService, BaseService<UserPolicy, Int>() {
     override fun getInstanceClass(): KClass<UserPolicy> {
         return UserPolicy::class
     }
@@ -63,5 +66,10 @@ class PolicyServiceImpl @Autowired constructor(
         val user = oUser.get()
         user.policy = null
         return userRepo.save(user)
+    }
+
+    override fun singleById(id: Int): UserPolicy {
+//        val spec = Specification.where(fetchRelation<UserPolicy, Role>("roles"))
+        return policyRepo.getByIdAndJoin(id).orElse(null)
     }
 }

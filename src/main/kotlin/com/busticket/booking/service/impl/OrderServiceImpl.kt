@@ -162,20 +162,21 @@ class OrderServiceImpl @Autowired constructor(
     }
 
 
-    fun getOrderByFromAndTo(from: Long?, to: Long?): List<Order> {
+    fun getOrderByFromAndTo(from: Long, to: Long): List<Order> {
         var spec = Specification.where(initSpec<Order>())
-        spec = from?.let { spec.and(statisticFrom(it)) } ?: spec
-        spec = to?.let { spec.and(statisticTo(it)) } ?: spec
+        spec = from.let { spec.and(statisticFrom(it)) }
+        spec = to.let { spec.and(statisticTo(it)) }
         return orderRepo.findAll(spec)
     }
 
 
-    fun revenueStatistics(orders: List<Order>, from: Long?, to: Long?): List<RevenueStatisticDto> {
+    fun revenueStatistics(orders: List<Order>, from: Long, to: Long): List<RevenueStatisticDto> {
         val revenueStatistics = mutableListOf<RevenueStatisticDto>()
-        val dayCalendar = Calendar.getInstance()
-        dayCalendar.timeInMillis = from!!
-        val day: Int = dayCalendar.get(Calendar.DAY_OF_MONTH)
-
+//        val dayCalendar = Calendar.getInstance()
+//        dayCalendar.timeInMillis = from!!
+//        val day: Int = dayCalendar.get(Calendar.DAY_OF_MONTH)
+        val statistic = orderRepo.revenueStatistics(from, to)
+        println(statistic)
 //        println(customers)
 //        orders.forEach {
 //
@@ -201,9 +202,19 @@ class OrderServiceImpl @Autowired constructor(
     }
 
     override fun statistics(from: Long?, to: Long?): StatisticDto {
-        val orders = getOrderByFromAndTo(from, to)
+        val startDayOfMonth = Calendar.getInstance()
+        startDayOfMonth.set(Calendar.DAY_OF_MONTH, 1)
+        startDayOfMonth.set(Calendar.HOUR_OF_DAY, 0)
+        startDayOfMonth.set(Calendar.MINUTE, 0)
+        startDayOfMonth.set(Calendar.SECOND, 0)
+        val realFrom = from ?: startDayOfMonth.timeInMillis
+        val currentDay = Calendar.getInstance()
+        val realTo = to ?: currentDay.timeInMillis
+
+
+        val orders = getOrderByFromAndTo(realFrom, realTo)
         val orderStatistic = orderStatistics(orders)
-        val revenueStatistics = revenueStatistics(orders, from, to)
+        val revenueStatistics = revenueStatistics(orders, realFrom, realTo)
         val customerRanking = customerRanking()
         return StatisticDto(
                 orderStatistics = orderStatistic,
