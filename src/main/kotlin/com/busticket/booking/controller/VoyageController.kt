@@ -19,13 +19,13 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("$API_PREFIX/voyages")
 @CrossOrigin
-@Secured(ROLE_MANAGER_VOYAGE)
 class VoyageController @Autowired constructor(
         private val voyageService: VoyageService,
         private val dtoBuilder: DtoBuilderService,
         private val restResponse: RestResponseService
 ) {
     @PostMapping
+    @Secured(ROLE_MANAGER_VOYAGE)
     fun createVoyage(@RequestBody @Valid dto: VoyageRequest): ResponseEntity<Any> {
         val voyage = voyageService.create(dto)
         val result = dtoBuilder.buildVoyageDto(voyage)

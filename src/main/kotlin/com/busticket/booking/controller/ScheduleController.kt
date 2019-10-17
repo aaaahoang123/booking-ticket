@@ -21,13 +21,13 @@ import kotlin.streams.toList
 @RestController
 @CrossOrigin
 @RequestMapping(value = ["$API_PREFIX/schedules"])
-@Secured(ROLE_MANAGER_SCHEDULE)
 class ScheduleController @Autowired constructor(
         private val scheduleService: ScheduleService,
         private val dtoBuilder: DtoBuilderService,
         private val restResponse: RestResponseService
 ) {
     @PostMapping
+    @Secured(ROLE_MANAGER_SCHEDULE)
     fun createSchedule(@RequestBody @Valid dto: ScheduleRequest, @ReqUser user: User): ResponseEntity<Any> {
         val schedule = scheduleService.create(user, dto)
         val result = dtoBuilder.buildScheduleDto(schedule)
@@ -35,6 +35,7 @@ class ScheduleController @Autowired constructor(
     }
 
     @GetMapping(value = ["/{id}"])
+    @Secured(ROLE_MANAGER_SCHEDULE)
     fun getScheduleById(@PathVariable("id") id: Int): ResponseEntity<Any> {
         val schedule = scheduleService.singleById(id)
         val result = dtoBuilder.buildScheduleDto(schedule)
@@ -42,6 +43,7 @@ class ScheduleController @Autowired constructor(
     }
 
     @DeleteMapping(value = ["/{id}"])
+    @Secured(ROLE_MANAGER_SCHEDULE)
     fun deleteSchedule(@PathVariable("id") id: Int): ResponseEntity<Any> {
         val schedule = scheduleService.delete(id)
         val result = dtoBuilder.buildScheduleDto(schedule)
@@ -49,6 +51,7 @@ class ScheduleController @Autowired constructor(
     }
 
     @PutMapping(value = ["/{id}"])
+    @Secured(ROLE_MANAGER_SCHEDULE)
     fun editSchedule(@PathVariable("id") id: Int, @RequestBody @Valid dto: ScheduleRequest, @ReqUser user: User): ResponseEntity<Any> {
         val schedule = scheduleService.edit(user, id, dto)
         val result = dtoBuilder.buildScheduleDto(schedule)
