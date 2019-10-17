@@ -23,9 +23,6 @@ class StatisticController @Autowired constructor(
                   @RequestParam("to") to: Long? = null): ResponseEntity<Any> {
 
         val result = orderService.statistics(from, to)
-//        val result = StatisticDto(
-//                orderStatistics = ordersStatistic
-//        )
         return restResponse.restSuccess(result)
     }
 }

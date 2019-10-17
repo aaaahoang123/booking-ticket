@@ -28,7 +28,7 @@ class VehicleCategoryServiceImpl @Autowired constructor(
         return primaryRepo.save(vehicleCategory)
     }
 
-//    override fun singleById(id: Int): VehicleCategory {
-//        return vehicleCategoryRepository.getOne(id)
-//    }
+    override fun singleById(id: Int): VehicleCategory {
+        return vehicleCategoryRepository.getByIdAndJoin(id).orElse(null)
+    }
 }

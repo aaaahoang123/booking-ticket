@@ -22,7 +22,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 
 @Service
@@ -82,8 +81,6 @@ class OrderServiceImpl @Autowired constructor(
         return dto.orderDetailRequest.map {
             val vehicleCategory = vehicleCategoryRepo.findById(it.vehicleCategoryId).get()
             val customerType = customerTypeRepo.findById(it.customerTypeId).get()
-            println("1:" + it.travelFromId)
-            println("1:" + it.travelToId)
             val travelFrom = voyagePartRepo.findById(it.travelFromId).get()
             val travelTo = voyagePartRepo.findById(it.travelToId).get()
             val voyagePart = voyagePartRepo.findByOrderNumberBetween(schedule.voyage!!, travelFrom.orderNumber, travelTo.orderNumber)
@@ -95,7 +92,6 @@ class OrderServiceImpl @Autowired constructor(
             val moneyIsReduced: Double = ((originTotalPrice * discount) / 100.00)
             val totalPrice = originTotalPrice - moneyIsReduced
 
-            println("distance: $distance")
             assignObject(
                     OrderDetail(
                             travelFrom = travelFrom,
@@ -140,22 +136,22 @@ class OrderServiceImpl @Autowired constructor(
         var totalRevenueUnPaid = 0.0
         var countUnPaid = 0
         orders.forEach() {
-            if (it.paidStatus == 1) {
+            if (it.status == 1) {
                 countPaid += 1
                 totalRevenuePaid += it.finalPrice!!
-            } else if (it.paidStatus == 0) {
+            } else if (it.status == -1) {
                 countUnPaid += 1
                 totalRevenueUnPaid += it.finalPrice!!
             }
         }
         orderStatistic.add(OrderStatisticDto(
                 total = countPaid,
-                paidStatus = 1,
+                status = 1,
                 totalRevenue = totalRevenuePaid
         ))
         orderStatistic.add(OrderStatisticDto(
                 total = countUnPaid,
-                paidStatus = 0,
+                status = -1,
                 totalRevenue = totalRevenueUnPaid
         ))
         return orderStatistic
@@ -170,19 +166,8 @@ class OrderServiceImpl @Autowired constructor(
     }
 
 
-    fun revenueStatistics(orders: List<Order>, from: Long, to: Long): List<RevenueStatisticDto> {
-        val revenueStatistics = mutableListOf<RevenueStatisticDto>()
-//        val dayCalendar = Calendar.getInstance()
-//        dayCalendar.timeInMillis = from!!
-//        val day: Int = dayCalendar.get(Calendar.DAY_OF_MONTH)
-//        val statistic = orderRepo.revenueStatistics(from, to)
-//        println(statistic)
-//        println(customers)
-//        orders.forEach {
-//
-//            if (from)
-//        }
-        return revenueStatistics
+    fun revenueStatistics(orders: List<Order>, from: Long, to: Long): List<Any> {
+        return orderRepo.revenueStatistics(from, to)
     }
 
     fun customerRanking(): List<CustomerRankingDto> {
@@ -214,12 +199,12 @@ class OrderServiceImpl @Autowired constructor(
 
         val orders = getOrderByFromAndTo(realFrom, realTo)
         val orderStatistic = orderStatistics(orders)
-//        val revenueStatistics = revenueStatistics(orders, realFrom, realTo)
+        val revenueStatistics = revenueStatistics(orders, realFrom, realTo)
         val customerRanking = customerRanking()
         return StatisticDto(
                 orderStatistics = orderStatistic,
-//                revenueStatistics = revenueStatistics,
-                customerRanking = customerRanking
+                revenueStatistics = revenueStatistics
+//                customerRanking = customerRanking
         )
     }
 
