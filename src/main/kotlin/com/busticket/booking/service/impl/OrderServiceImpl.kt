@@ -175,8 +175,8 @@ class OrderServiceImpl @Autowired constructor(
 //        val dayCalendar = Calendar.getInstance()
 //        dayCalendar.timeInMillis = from!!
 //        val day: Int = dayCalendar.get(Calendar.DAY_OF_MONTH)
-        val statistic = orderRepo.revenueStatistics(from, to)
-        println(statistic)
+//        val statistic = orderRepo.revenueStatistics(from, to)
+//        println(statistic)
 //        println(customers)
 //        orders.forEach {
 //
@@ -214,11 +214,11 @@ class OrderServiceImpl @Autowired constructor(
 
         val orders = getOrderByFromAndTo(realFrom, realTo)
         val orderStatistic = orderStatistics(orders)
-        val revenueStatistics = revenueStatistics(orders, realFrom, realTo)
+//        val revenueStatistics = revenueStatistics(orders, realFrom, realTo)
         val customerRanking = customerRanking()
         return StatisticDto(
                 orderStatistics = orderStatistic,
-                revenueStatistics = revenueStatistics,
+//                revenueStatistics = revenueStatistics,
                 customerRanking = customerRanking
         )
     }
