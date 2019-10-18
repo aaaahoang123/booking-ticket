@@ -51,4 +51,11 @@ class VehicleController @Autowired constructor(
         val result = dtoBuilder.buildVehicleDto(vehicle)
         return restResponse.restSuccess(result)
     }
+
+    @GetMapping(value = ["/category/{id}"])
+    fun getByCategoryId(@PathVariable("id") categoryId: Int): ResponseEntity<Any> {
+        val vehicles = vehicleService.getByCategoryId(categoryId)
+        val result = vehicles.map { dtoBuilder.buildVehicleDto(it) }
+        return restResponse.restSuccess(result)
+    }
 }

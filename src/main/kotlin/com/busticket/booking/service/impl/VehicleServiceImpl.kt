@@ -38,4 +38,8 @@ class VehicleServiceImpl @Autowired constructor(
         val vehicle = assignObject(vehicleExist, dto)
         return primaryRepo.save(vehicle)
     }
+
+    override fun getByCategoryId(categoryId: Int): List<Vehicle> {
+        return vehicleRepository.getByVehicleCategoryId(categoryId)
+    }
 }

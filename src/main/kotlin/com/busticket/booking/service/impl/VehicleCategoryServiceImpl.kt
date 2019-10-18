@@ -27,8 +27,4 @@ class VehicleCategoryServiceImpl @Autowired constructor(
         val vehicleCategory = assignObject(VehicleCategory(), dto)
         return primaryRepo.save(vehicleCategory)
     }
-
-    override fun singleById(id: Int): VehicleCategory {
-        return vehicleCategoryRepository.getByIdAndJoin(id).orElse(null)
-    }
 }
